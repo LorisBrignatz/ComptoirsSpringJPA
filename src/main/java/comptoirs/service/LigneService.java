@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 @Service
-@Validated // Les contraintes de validatipn des méthodes sont vérifiées
+@Validated // Les contraintes de validation des méthodes sont vérifiées
 public class LigneService {
     // La couche "Service" utilise la couche "Accès aux données" pour effectuer les traitements
     private final CommandeRepository commandeDao;
