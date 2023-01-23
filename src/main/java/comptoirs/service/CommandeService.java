@@ -1,6 +1,10 @@
 package comptoirs.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import comptoirs.entity.Ligne;
+import comptoirs.entity.Produit;
 
 import org.springframework.stereotype.Service;
 
@@ -63,7 +67,18 @@ public class CommandeService {
      */
     @Transactional
     public Commande enregistreExpédition(Integer commandeNum) {
+        var commande = commandeDao.findById(commandeNum).orElseThrow();
 
+        if (commande.getEnvoyeele() == null) {
+            commande.setEnvoyeele(LocalDate.now());
+            for (Ligne l : commande.getLignes()) {
+                Produit p = l.getProduit();
+                p.setUnitesEnStock(p.getUnitesEnStock() - l.getQuantite());
+            }
 
+        } else {
+            throw new IllegalArgumentException("La commande est déjà enregistrée");
+        }
+        return commande;
     }
 }

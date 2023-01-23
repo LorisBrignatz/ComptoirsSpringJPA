@@ -47,7 +47,7 @@ public class LigneService {
     Ligne ajouterLigne(Integer commandeNum, Integer produitRef, @Positive int quantite) {
         var produit = produitDao.findById (produitRef).orElseThrow();
         var commande = commandeDao.findById(commandeNum).orElseThrow();
-        Ligne lgn = new Ligne;
+        Ligne lgn = new Ligne();
 
         if (quantite > 0 && produit.getUnitesEnStock() >= quantite && commande == null) {
             lgn.setProduit(produit);
