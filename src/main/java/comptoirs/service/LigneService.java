@@ -47,5 +47,21 @@ public class LigneService {
     Ligne ajouterLigne(Integer commandeNum, Integer produitRef, @Positive int quantite) {
         var produit = produitDao.findById (produitRef).orElseThrow();
         var commande = commandeDao.findById(commandeNum).orElseThrow();
+        Ligne lgn = new Ligne;
+
+        if (quantite > 0 && produit.getUnitesEnStock() >= quantite && commande == null) {
+            lgn.setProduit(produit);
+            lgn.setCommande(commande);
+            lgn.setQuantite(quantite);
+
+            ligneDao.save(lgn);
+            produit.setUnitesCommandees(produit.getUnitesCommandees() + quantite);
+            produitDao.save(produit);
+
+        } else {
+
+            throw new IllegalArgumentException("La ligne n'a pas été ajoutée");
+        }
+        return lgn;
     }
 }
